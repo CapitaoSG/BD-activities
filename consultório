@@ -1,0 +1,56 @@
+create table ambulatorio(
+  nroa numeric primary key,
+  andar varchar(20),
+  capacidade varchar(50));
+  
+  insert into ambulatorio values (01, 'terceiro', '10'),
+  (02, 'segundo', '10'),
+  (03, 'primeiro', '20');
+  
+create table medicos(
+  codm numeric primary key,
+  CPF numeric,
+  nome varchar(50),
+  idade numeric,
+  cidade varchar(50),
+  especialidade varchar(50),
+  nroa numeric references ambulatorio (nroa));
+  
+  insert into medicos values (01, 21512347466, 'Sérgio', 26, 'Araçagi', 'oftalmologista', 03),
+  (02, 44445851262, 'Paulo', 42, 'João Pessoa', 'ortopedista', 02),
+  (03, 74931525484, 'Maria', 30, 'João Pessoa', 'cardiologista', 01);
+  
+create table pacientes(
+  codp numeric primary key,
+  CPF numeric,
+  nome varchar(50),
+  idade numeric,
+  cidade varchar(50),
+  doença varchar(50));
+  
+  insert into pacientes values (01, 87445145596, 'Tcholla', 25, 'Arara', 'lepra'),
+  (02, 44175228910, 'Cadeirudo', 60, 'Pirpiri', 'Chagas'),
+  (03, 61542596522, 'Zuca', 37, 'Pimbal', 'tétano');
+  
+  
+create table consultas(
+  codm numeric references medicos (codm),
+  codp numeric references pacientes (codp),
+  data varchar(15),
+  hora varchar(15),
+  primary key (codm, codp));
+  
+  insert into consultas values (01, 03, '12/05/2023', '12:07'),
+  (02, 01, '27/11/2022', '14:34'),
+  (03, 02, '02/04/2023','21:44');
+  
+  
+ create or REPLACE view medicos_consultas as
+ select medicos.nome as "nome do médico",
+ pacientes.nome as "nome do paciente",
+ consultas.hora as "horário da consulta"
+ from medicos
+ inner join pacientes on (pacientes.codp = medicos.codm)
+ inner join consultas on (pacientes.codp = medicos.codm)
+ 
+ select * from medicos_consultas
