@@ -1,0 +1,166 @@
+create table cliente(
+  CPF numeric primary key,
+  nome varchar(200),
+  dtNasc DATE);
+  
+  insert into cliente values (12345678922, 'Daniel', '12/20/2001'),
+  (16245397642, 'Chucrute', '11/10/2003'),
+  (15876349264, 'Jurubeba', '08/13/1993'),
+  (13945287651, 'João', '02/02/2002');
+  
+create table modelo(
+  CodMod int primary key,
+  Desc_ varchar(100));
+    
+  insert into modelo values (01, 'Mitsubhisi Lancer Evo'),
+  (02, 'Shineray Ray 50 Turbo'),
+  (03, 'Honda Pop 100'),
+  (04, 'Lotus Emira');
+    
+Create table patio(
+  num int primary key,
+  ender varchar(100),
+  capacidade int);
+  
+  insert into patio values (01, 'Rua Manoel Gomes', 10),
+  (02, 'Rua da Feira', 20),
+  (03, 'Rua da Laje', 25),
+  (04, 'Rua do Sapo', 50);
+  
+create table veiculo(
+  placa varchar(8) primary key,
+  modelo_codMod int references modelo (codMod),
+  cliente_CPF numeric references cliente (CPF),
+  cor varchar(20));
+  
+  insert into veiculo values ('JJJ-2020', 01, 16245397642, 'verde'),
+  ('BRU-1523', 03, 12345678922, 'vermelho'),
+  ('PNS-8400', 04, 15876349264, 'amarelo'),
+  ('PRF-2376', 02, 13945287651, 'branco');
+  
+  
+  
+create table estaciona(
+  cod int primary key,
+  patio_num int references patio (num),
+  veiculo_placa varchar(8) REFERENCES veiculo (placa),
+  DtEntrada varchar(10),
+  DtSaida varchar(10),
+  HsEntrada varchar(10),
+  HsSaida varchar(10));
+  
+  insert into estaciona values (01, 02, 'JJJ-2020', '14/07/2023', '14/07/2023', '11:00', '13:00'),
+  (02, 03, 'BRU-1523', '12/07/2023', '13/07/2023', '14:00', '15:00'),
+  (03, 01, 'PNS-8400', '18/05/2023', '15/09/2023', '16:00', '18:00'),
+  (04, 04, 'PRF-2376', '13/07/2023', '09/01/2023', '13:00', '22:00');
+  
+  show datestyle
+  
+  --3) lista as placas e os nomes dos proprietários dos veículos
+  
+  select p.placa as "Placa do veículo",
+  c.nome as "Nome do proprietário"
+  
+  from veiculo p
+  inner join cliente c
+  on (p.cliente_CPF = c.CPF)
+  
+  --4) Exibir o CPF e o Nome dos clientes que possuem os veículos com placas terminadas com ‘0’.
+
+  select c.CPF as "CPF do cliente",
+  C.nome as "Nome do cliente"
+  
+  from cliente C
+  inner join veiculo
+  on (cliente_CPF = C.CPF)
+  where placa like '%0'
+  
+  --5) Exibir a placa e a cor do veículo que possui o código de estacionamento 1.
+  
+  select placa as "Placa do veículo",
+  cor as "Cor do veículo"
+  
+  from estaciona 
+  inner join veiculo
+  on (veiculo_placa = placa)
+  where patio_num = 01
+  
+  --6) Exibir a placa e a descrição de seu modelo, se ele for do cliente chamado João.
+  
+  select placa as "Placa do veículo",
+  Desc_ as "Descrição do modelo"
+  
+  from veiculo
+  inner join modelo
+  on (modelo_codMod = CodMod)
+  inner join cliente
+  on (cliente_CPF = CPF)
+  where nome like '%João%'
+  
+  --7) Exibir o endereço, a data de entrada e de saída dos estacionamentos dos veículos terminados em “6”.
+  
+   select ender as "Endereço do pátio",
+   DtEntrada as "Data de entrada do veículo",
+   DtSaida as "Data de saída do veículo"
+   
+   from estaciona
+   inner join veiculo
+   on (veiculo_placa = placa)
+   inner join patio
+   on (patio_num = num)
+   where placa like '%6'
+   
+   --8) Exibir a quantidade de vezes que os veículos de cor verde estacionaram.
+   
+   select count (*) as "Quantidade de vezes"
+   
+   from estaciona
+   inner join veiculo
+   on veiculo_placa = placa
+   inner join patio
+   on patio_num = num
+   where cor = 'verde'
+   
+   --9) Listar todos os clientes e placas dos carros que possuem modelo do carro 1.
+   
+   select nome as "nome do cliente",
+   placa as "placa do veículo"
+   
+   from cliente
+   inner join veiculo
+   on CPF = cliente_CPF
+   inner join modelo
+   on CodMod = modelo_codmod
+   where CodMod = 01
+   
+   --10) Listar as placas, os horários de entrada e saída dos veículos de cor vermelha.
+   
+   select placa as "placa do veículo",
+   HsEntrada as "horário de entrada",
+   HsSaida as "horário de saída"
+   
+   from estaciona
+   inner join veiculo
+   on placa = veiculo_placa
+   where cor = 'vermelho'
+   
+   --11) Listar todos os estacionamentos do veículo de placa “JJJ-2020”.
+   
+   select ender as "estacionamento"
+  
+   from patio
+   inner join estaciona
+   on num = patio_num
+   where veiculo_placa = 'JJJ-2020'
+   
+   --12) Exibir a placa, o nome dos donos e a descrição dos modelos de todos os veículos.
+   
+   select placa as "placa",
+   nome as "nome do proprietário",
+   Desc_ as "descrição do modelo"
+   
+   from veiculo
+   inner join cliente
+   on cliente_CPF = CPF
+   inner join modelo
+   on modelo_codMod = CodMod
