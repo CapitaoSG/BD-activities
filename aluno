@@ -1,0 +1,20 @@
+--drop table aluno;
+
+create table aluno(
+  codigo int primary key, 
+  nome varchar(150),
+  idade int
+  );
+  insert into aluno values (1, 'sejo', 17),
+  (2, 'marconde', 15),
+  (3, 'Jeremia', 25), 
+  (4, 'Clecio', 15),
+  (5, 'Matias', 30),
+  (6, 'Tcholla', 1000000),
+  (7, 'Leno Brega', 70);
+  
+  insert into aluno values (8, 'Guilhe Brogs', 42);
+ 
+ --update aluno
+ --set idade = 17
+ --where codigo = 6
