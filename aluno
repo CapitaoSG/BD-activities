@@ -18,3 +18,6 @@ create table aluno(
  --update aluno
  --set idade = 17
  --where codigo = 6
+ 
+ select * from aluno
+ select * from aluno where nome like 'M%'
