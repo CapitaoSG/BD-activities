@@ -1,0 +1,1 @@
+select from produto where preço = 50 and 120
