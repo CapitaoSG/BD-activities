@@ -1,0 +1,34 @@
+Create table pessoas(
+  id int primary key,
+  nome varchar (250),
+  fk_profissao int REFERENCES profissao (id)
+  );
+  
+Create table profissao(
+  id int primary key,
+  nome varchar (250)
+  );
+ 
+ insert into pessoas VALUES
+ (1, 'Joao', 1),
+ (2, ' Pedro', 1),
+ (3, ' Arthur', 2),
+ (4, ' JULIa', 3),
+ (5, ' Vitor', 4),
+ (6, ' Maria Vita', 4),
+ (7, 'Ariel', null);
+ 
+ insert into profissao values
+ (1, ' Analista de sistema'),
+ 
+ (2, ' Analista de dados'),
+ (3, ' Desenvolvedor pleno'),
+ (4, 'Professor');
+ 
+ 
+ insert into profissao values(14, 'Jornalista');
+ 
+ select * from pessoas 
+ left join profissao 
+ on (pessoas.fk_profissao = profissao.id),
+ WHERE pessoas.fk_profissao = 3;
