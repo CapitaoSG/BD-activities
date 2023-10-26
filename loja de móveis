@@ -1,0 +1,105 @@
+create table motorista(
+  codMot integer primary key,
+  CPF numeric(11),
+  CNH numeric(10),
+  nome varchar(150),
+  endereço varchar(200)
+  );
+  
+  insert into motorista values (01, 40266675417, 1234567890, 'Sathangoço' , 'Morro do careca');
+  insert into motorista values (02, 15239574121, 0987654321, 'Maléfiko' , 'Cangote do urubu');
+  insert into motorista values (03, 20140280034, 1267890256, 'Pedro' , 'Gramado');
+  
+  select * from motorista
+  
+create table veículo(
+  placa char(7) primary key,
+  capacidade INTEGER);
+  
+  insert into veículo values ('EDR8764', 8);
+  insert into veículo values ('DCA5980', 2);
+  insert into veículo values ('JAB0921', 50);
+  
+  select * from veículo
+  
+CREATE Table cliente(
+  codCli integer primary key,
+  nome varchar(50),
+  tel char(10),
+  endereço varchar(200),
+  CPF numeric(11),
+  email varchar(50));
+    
+  insert into cliente values (01, 'Sergio', 982554736, 'Castelo Branco', 08074658700, 'sergioavoador2012@gmail.com');
+  insert into cliente values (02, 'Pedro', 981423687, 'Rua da Coreia', 85576596521, 'pedropapel22@gmail.com');
+  insert into cliente values (03, 'Fabio', 992865332, 'rua do Sapo', 87852074012, 'fabioalmeida777@gmail.com');
+  
+  select * from cliente
+  
+CREATE TABLE produto(
+  codPro integer primary key,
+  custo numeric(11,2),
+  descrição text,
+  preço numeric(11,2),
+  nome varchar(50));
+  
+  insert into produto values (001, 10, 'shampoo do CR7', 14.70, 'shampoo');
+  insert into produto values (002, 20, 'milkshake batido com ouro', 50, 'milkshake');
+  insert into produto values (003, 1.50, 'milho de pipoca com sal', 5.75, 'milho de pipoca');
+  
+  
+  select * from produto
+  
+create table vendedor(
+  codVdd integer primary key,
+  CPF numeric(11),
+  v_comissão numeric(4,2),
+  nome varchar(50),
+  endereço varchar(200));
+  
+  insert into vendedor values (01, 75315945685, 20.10, 'Leandro', 'Rua da Laje');
+  insert into vendedor values (02, 12342574541, 13.15, 'José Tavares', 'Rua da Palha');
+  insert into vendedor values (03, 85674585412, 12.40, 'Brenda Letícia', 'Rua do Vai Quem Quer');
+  
+  select * from vendedor
+
+create table venda(
+  numVen integer primary KEY,
+  valorTotal numeric(11,2),
+  codVdd integer references vendedor (codVdd),
+  codCli integer references cliente (codCli));
+  
+  insert into venda values (01, 124.15, 03, 02);
+  insert into venda values (02, 43.75, 01, 03);
+  insert into venda values (03, 12.15, 02, 01);
+  
+  select * from venda
+  
+create table itemVenda(
+  codPro integer REFERENCES produto (codPro),
+  numVen integer REFERENCES venda (numVen),
+  vUnitario numeric(11,2),
+  qtd integer,
+  primary key(codPro, numVen));
+  
+  insert into itemVenda values (002, 01, 12, 2);
+  insert into itemVenda values (003, 02, 74, 8);
+  insert into itemVenda values (001, 03, 100, 4);
+  
+  select * from itemVenda
+  
+create table entrega(
+  hora time,
+  data date,
+  numVen integer REFERENCES venda (numVen),
+  placa char(7) references veículo (placa),
+  codMot integer references motorista (codMot),
+  primary key(hora, data, numVen, placa, codMot));
+  
+  insert into entrega values ('12:00', '12.08.2023', 01, 'EDR8764', 02);
+  insert into entrega values ('11:00', '12.06.2023', 02, 'JAB0921', 03);
+  insert into entrega values ('15:00', '05.01.2023', 03, 'DCA5980', 01);
+  
+  --SET datestyle TO 'SQL',' DMY';
+  --não consegui fazer isso funcionar
+  select * from entrega
