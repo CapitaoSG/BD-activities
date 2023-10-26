@@ -1,0 +1,27 @@
+drop table curso;
+
+create table aluno(
+  cod int primary key,
+  nome varchar(50),
+  codCurso int references curso (codCurso));
+  
+  insert into aluno values (1, 'João', 3);
+  insert into aluno values (2, 'Daniel', 1);
+  insert into aluno values (3, 'Fábio', 2);
+  insert into aluno values (4, 'Bento', 1);
+  
+  select * from aluno;
+  
+create table curso(
+  codCurso int primary key,
+  nome varchar(50));
+  
+  insert into curso values (1, 'informática');
+  insert into curso values (2, 'contabilidade');
+  insert into curso values (3, 'edificações');
+  
+  select * from curso;
+  
+   select a.nome, c.nome from aluno a inner join curso c on (a.codCurso = C.codCurso)
+   
+--select from produto where custo = 10 and preço = 50
