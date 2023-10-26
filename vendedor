@@ -1,0 +1,13 @@
+drop table vendedor;
+
+create table vendedor(
+  id_vend int primary key,
+  nome varchar(150) not null,
+  cidade varchar(150) not null,
+  estado char(2) not NULL
+  );
+  
+  insert into vendedor values (01, 'Mácio', 'Araçagi', 'PB'),
+  (02, 'Tonho', 'Pirpirituba', 'PB')
+  
+  select * from vendedor
