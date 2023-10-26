@@ -1,0 +1,13 @@
+drop table vendas;
+
+create table vendas(
+  id_vendas int primary key,
+  id_vend int references vendedor (id_vend),
+  cliente varchar(150),
+  id_prod int references produto (id_prod),
+  data date not NULL
+  );
+  
+  insert into vendas values (01, 02, 'Vando', 05, '10/11/2004');
+  
+ select * from vendas
