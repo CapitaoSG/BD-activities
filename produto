@@ -1,0 +1,27 @@
+drop table produto;
+
+create table produto(
+id_prod int primary key, 
+  nome varchar(150),
+  preço numeric(10,2)
+  );
+  
+ insert into produto values (01,'nescau', 6),
+ (02, 'leite mococa', 13);
+ insert into produto values (03, 'biscoito treloso chocolate', 4),
+ (04, 'biscoito treloso morango', 4),
+ (05, 'bolacha creme crack', 7);
+ 
+  --update produto
+  --set preço = 13.50
+  --where id = 02
+  
+  update produto
+  set preço = 4.85
+  where id = 03
+  
+  update produto
+  set preço = 4.60
+  where id = 04
+  
+  select * from produto
