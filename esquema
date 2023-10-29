@@ -1,0 +1,149 @@
+CREATE TABLE professor(
+  numero_prof integer NOT NULL,
+  nome_prof character varying(30),
+  rua_prof character varying(30),
+  cidade_prof character varying(30),
+  PRIMARY KEY (numero_prof)
+);
+
+CREATE TABLE aluno (
+  numero_aluno integer NOT NULL,
+  nome_aluno character varying(30),
+  rua_aluno character varying(30),
+  cidade_aluno character varying(30),
+  PRIMARY KEY (numero_aluno)
+);
+
+CREATE TABLE disciplina(
+  codigo_disc integer NOT NULL,
+  nome_disc character varying(30),
+  nome_curso character varying(30),
+  qtd_aulas integer,
+  PRIMARY KEY (codigo_disc)
+);
+
+CREATE TABLE matricula(
+  numero_aluno integer NOT NULL,
+  codigo_disc integer NOT NULL,
+  ano character varying(4) NOT NULL,
+  PRIMARY KEY (numero_aluno, codigo_disc, ano),
+  FOREIGN KEY (numero_aluno) REFERENCES aluno (numero_aluno),
+  FOREIGN KEY (codigo_disc) REFERENCES disciplina (codigo_disc)
+);
+
+CREATE TABLE profdisc(
+  codigo_disc integer NOT NULL,
+  numero_prof integer NOT NULL,
+  ano character varying(4),
+  PRIMARY KEY (codigo_disc, numero_prof, ano),
+  FOREIGN KEY (codigo_disc) REFERENCES disciplina (codigo_disc),
+  FOREIGN KEY (numero_prof) REFERENCES professor (numero_prof)
+);
+
+ INSERT INTO aluno VALUES (1, ' Tiago Mateus Junior', '210', 'Palmas');
+ INSERT INTO aluno VALUES (2, 'Luciana Gomes', '202', 'Palmas');
+ INSERT INTO aluno VALUES (3, 'João Mateus', '2300', 'Gurupi');
+ INSERT INTO aluno VALUES (4, 'José Silva', '1024', 'Paraíso');
+ INSERT INTO aluno VALUES (5, 'Juraci', '106', 'Miranorte');
+ INSERT INTO aluno VALUES (6, 'Paulo', '101', 'Goianorte');
+ INSERT INTO aluno VALUES (7, 'Adriana Calcanhoto', 'rua Alvorada', 'Paraíso');
+ INSERT INTO aluno VALUES (8, 'Rosane', 'rua das flores', 'Guaraí');
+ INSERT INTO aluno VALUES (9, 'Mara', 'rua das águas', 'Porto Nacional');
+ INSERT INTO aluno VALUES (10, 'Julia', 'rua de madeira', 'Paraíso');
+ INSERT INTO aluno VALUES (11, 'Julia', 'rua de madeira', 'Palmas');
+
+ INSERT INTO professor VALUES (1, 'João José', '103', 'Palmas');
+ INSERT INTO professor VALUES (2, 'Maria José', '201', 'Palmas');
+ INSERT INTO professor VALUES (3, 'Bruno', '305', 'Paraiso');
+ INSERT INTO professor VALUES (4, 'José Ricardo', '1106', 'Porto Nacional');
+ INSERT INTO professor VALUES (5, 'Manuela', '120', 'Araguaína');
+ INSERT INTO professor VALUES (6, 'Bruno', '1003', 'Porto Nacional');
+ INSERT INTO professor VALUES (7, 'Luciana', ' 100', 'Miracema');
+ INSERT INTO professor VALUES (8, 'Paulo', ' 150', 'Palmas');
+ INSERT INTO professor VALUES (9, 'Lual', '1006', 'Paraíso');
+ INSERT INTO professor VALUES (10, 'Antonio Marcos', '170', 'Araguaína');
+
+
+ INSERT INTO disciplina VALUES (1, ' Química', 'Ensino Médio', 4);
+ INSERT INTO disciplina VALUES (2, ' Biologia', 'Ensino Médio', 4);
+ INSERT INTO disciplina VALUES (3, 'História', 'Ensino Médio', 2);
+ INSERT INTO disciplina VALUES (4, ' Religião', 'Ensino Médio', 2);
+ INSERT INTO disciplina VALUES (5, ' Português', 'Ensino Pós Médio', 4);
+ INSERT INTO disciplina VALUES (6, 'Física', 'Ensino Pós Médio', 6);
+ INSERT INTO disciplina VALUES (7, 'Matemática', 'Ensino Pós Médio', 4);
+ INSERT INTO disciplina VALUES (8, 'Geografia ', 'Ensino Pós Médio', 2);
+ INSERT INTO disciplina VALUES (9, 'Informática Aplicada', 'CST Sistemas para Internet', 4);
+ INSERT INTO disciplina VALUES (10, 'Banco de dados', 'CST Sistemas para Internet', 4);
+ INSERT INTO disciplina VALUES (11, 'Programação de Banco de dados', 'Computação', 4);
+
+
+ INSERT INTO matricula VALUES (1, 10, '2018');
+ INSERT INTO matricula VALUES (1, 4, '2018');
+ INSERT INTO matricula VALUES (1, 6, '2018');
+ INSERT INTO matricula VALUES (5, 3, '2018');
+ INSERT INTO matricula VALUES (6, 1, '2018');
+ INSERT INTO matricula VALUES (2, 6, '2018');
+ INSERT INTO matricula VALUES (7, 9, '2018');
+ INSERT INTO matricula VALUES (8, 10, '2018');
+ INSERT INTO matricula VALUES (9, 1, '2018');
+ INSERT INTO matricula VALUES (2, 2, '2018');
+ INSERT INTO matricula VALUES (11, 11, '2018');
+
+ INSERT INTO profdisc VALUES (1, 10, '2018');
+ INSERT INTO profdisc VALUES (2, 5, '2018');
+ INSERT INTO profdisc VALUES (3, 7, '2018');
+ INSERT INTO profdisc VALUES (4, 4, '2018');
+ INSERT INTO profdisc VALUES (5, 9, '2018');
+ INSERT INTO profdisc VALUES (6, 2, '2018');
+ INSERT INTO profdisc VALUES (7, 3, '2018');
+ INSERT INTO profdisc VALUES (8, 9, '2018');
+ INSERT INTO profdisc VALUES (9, 6, '2018');
+ INSERT INTO profdisc VALUES (10, 3, '2018');
+ INSERT INTO profdisc VALUES (11, 5, '2018');
+
+
+
+
+/* 1. Crie uma View com todas as disciplinas oferecidas no ano de 2018, constando os nomes das
+disciplinas, nomes e cidades dos professores responsáveis e nomes dos cursos das disciplinas. */
+
+ create or replace view disciplinas_2018 AS
+ select disciplina.nome_disc as "nome da disciplina",
+ disciplina.nome_curso as "nome do curso",
+ professor.nome_prof as "nome do professor",
+ professor.cidade_prof as "cidade de professor"
+ from profdisc
+ inner join disciplina on (profdisc.codigo_disc = disciplina.codigo_disc)
+ inner join professor on (profdisc.numero_prof = professor.numero_prof)
+ 
+ 
+ select * from disciplinas_2018 
+
+
+/* 2. Crie uma View que mostre todos os nomes dos professores do curso de CST Sistemas para Internet,
+no ano de 2018, e os nomes das disciplinas pelas quais são responsáveis. */
+
+ Create or replace view professor_SI_2018 AS
+ select professor.nome_prof as "nome do professor",
+ disciplina.nome_disc as "nome das discipinas"
+ from profdisc
+ inner join disciplina on (profdisc.codigo_disc = disciplina.codigo_disc)
+ inner join professor on (profdisc.numero_prof = professor.numero_prof)
+ where disciplina.nome_curso = 'CST Sistemas para Internet' and profdisc.ano = '2018';
+ 
+ select * from professor_SI_2018
+ 
+ 
+/* 3. Crie uma View com todos os nomes de alunos matriculados no ano de 2018, os nomes das disciplinas
+em que estão matriculados, a cidade onde moram e os nomes dos cursos das disciplinas. */
+
+ create or replace view registro_alunos_2018 as
+ select aluno.nome_aluno as "nome do aluno",
+ aluno.cidade_aluno as "cidade do aluno",
+ disciplina.nome_disc as "nome da disciplina"
+ from matricula 
+ inner join aluno on (aluno.numero_aluno = matricula.numero_aluno)
+ inner join disciplina on (disciplina.codigo_disc = matricula.codigo_disc);
+ 
+ select * from registro_alunos_2018
+ 
